@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import cx from 'classnames';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import cx from "classnames";
 
 class StarRatingComponent extends Component {
   static propTypes = {
@@ -19,8 +19,8 @@ class StarRatingComponent extends Component {
   static defaultProps = {
     starCount: 5,
     editing: true,
-    starColor: '#ffb400',
-    emptyStarColor: '#333'
+    starColor: "#ffb400",
+    emptyStarColor: "#333"
   };
 
   constructor(props) {
@@ -31,10 +31,10 @@ class StarRatingComponent extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(nextProps) {
     const { value } = nextProps;
 
-    if (value != null && (value !== this.state.value)) {
+    if (value != null && value !== this.state.value) {
       this.setState({ value });
     }
   }
@@ -51,7 +51,7 @@ class StarRatingComponent extends Component {
       return;
     }
 
-    this.setState({value: inputValue});
+    this.setState({ value: inputValue });
   }
 
   onStarClick(index, value, name, e) {
@@ -91,23 +91,17 @@ class StarRatingComponent extends Component {
   }
 
   renderStars() {
-    const {
-      name,
-      starCount,
-      starColor,
-      emptyStarColor,
-      editing
-    } = this.props;
+    const { name, starCount, starColor, emptyStarColor, editing } = this.props;
     const { value } = this.state;
 
     const starStyles = (i, value) => ({
-      float: 'right',
-      cursor: editing ? 'pointer' : 'default',
+      float: "right",
+      cursor: editing ? "pointer" : "default",
       color: value >= i ? starColor : emptyStarColor
     });
     const radioStyles = {
-      display: 'none',
-      position: 'absolute',
+      display: "none",
+      position: "absolute",
       marginLeft: -9999
     };
 
@@ -133,7 +127,12 @@ class StarRatingComponent extends Component {
         <label
           key={`label_${id}`}
           style={starStyles(i, value)}
-          className={'dv-star-rating-star ' + (value >= i ? 'dv-star-rating-full-star' : 'dv-star-rating-empty-star')}
+          className={
+            "dv-star-rating-star " +
+            (value >= i
+              ? "dv-star-rating-full-star"
+              : "dv-star-rating-empty-star")
+          }
           htmlFor={id}
           onClick={e => this.onStarClick(i, value, name, e)}
           onMouseOver={e => this.onStarHover(i, value, name, e)}
@@ -154,28 +153,39 @@ class StarRatingComponent extends Component {
     const { renderStarIcon, renderStarIconHalf } = this.props;
 
     if (
-      typeof renderStarIconHalf === 'function' &&
+      typeof renderStarIconHalf === "function" &&
       Math.ceil(value) === index &&
       value % 1 !== 0
     ) {
       return renderStarIconHalf(index, value, name, id);
     }
 
-    if (typeof renderStarIcon === 'function') {
+    if (typeof renderStarIcon === "function") {
       return renderStarIcon(index, value, name, id);
     }
 
-    return <i key={`icon_${id}`} style={{fontStyle: 'normal'}}>&#9733;</i>;
+    return (
+      <i key={`icon_${id}`} style={{ fontStyle: "normal" }}>
+        &#9733;
+      </i>
+    );
   }
 
   render() {
     const { editing, className } = this.props;
-    const classes = cx('dv-star-rating', {
-      'dv-star-rating-non-editable': !editing
-    }, className);
+    const classes = cx(
+      "dv-star-rating",
+      {
+        "dv-star-rating-non-editable": !editing
+      },
+      className
+    );
 
     return (
-      <div style={{display: 'inline-block', position: 'relative'}} className={classes}>
+      <div
+        style={{ display: "inline-block", position: "relative" }}
+        className={classes}
+      >
         {this.renderStars()}
       </div>
     );
